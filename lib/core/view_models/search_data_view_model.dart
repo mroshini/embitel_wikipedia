@@ -39,21 +39,6 @@ class SearchDataViewModel extends BaseChangeNotifierModel {
 
   setSearchedData(List<Pages> pages, String searchQuery) async {
     _searchedPages = pages;
-    await _searchDataRepository.getCachedPages().then((value) {
-      if (value.isNotEmpty) {
-        value.asMap().forEach((index, pageData) {
-          if (pageData.title.toLowerCase().contains(searchQuery)) {
-            if (_searchedPages.every((item) =>
-                item.title.toLowerCase() != pageData.title.toLowerCase())) {
-              _searchedPages.add(pageData);
-            } else {}
-            //_searchedPages.add(pageData);
-          }
-        });
-      } else {
-        _searchedPages = pages;
-      }
-    });
     notifyListeners();
   }
 
@@ -97,13 +82,10 @@ class SearchDataViewModel extends BaseChangeNotifierModel {
 
   loadFromCache(String query) async {
     await _searchDataRepository.getCachedPages().then((value) {
-      if (value.isNotEmpty) {
+      if (value.length > 0) {
         value.asMap().forEach((index, pageData) {
           if (pageData.title.toLowerCase().startsWith(query.toLowerCase())) {
-            if (_searchedPages.every((item) =>
-                item.title.toLowerCase() != pageData.title.toLowerCase())) {
-              _searchedPages.add(pageData);
-            } else {}
+            _searchedPages.add(pageData);
           } else {}
         });
       } else {

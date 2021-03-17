@@ -35,12 +35,8 @@ class SearchDataRepository implements SearchDataRepositoryBase {
           } else {}
         });
         await _searchedDataBox.addAll(updatedPages);
-        print(
-            "Added--${updatedPages.length}--${_searchedDataBox.values.length}");
       } else {
         await _searchedDataBox.addAll(listOfQueries);
-        print(
-            "Added11--${listOfQueries.length}--${_searchedDataBox.values.length}");
       }
     });
   }
@@ -88,6 +84,7 @@ class SearchDataRepository implements SearchDataRepositoryBase {
 
   @override
   Future<List<Pages>> getCachedPages() async {
+    await init();
     if (_searchedDataBox != null) {
       pages = _searchedDataBox.values.toList();
     } else {
